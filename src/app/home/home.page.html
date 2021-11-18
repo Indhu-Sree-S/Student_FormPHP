@@ -7,67 +7,117 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <form #submitform = "ngForm" (ngSubmit)="SubmitStudentDetails(submitform)">
 
-    <ion-item>
-      <ion-label class="ion-text-left" position="floating" >Student Name</ion-label>
-      <ion-input minlength=2 [(ngModel)]="studentDetails.StudentName" #StudentNameCtrl="ngModel" name="StudentName"class="ion-text-right" required></ion-input>
-    </ion-item>
-    <div *ngIf="!StudentNameCtrl.valid && StudentNameCtrl.touched">
-      <ion-text color="danger">Student Name is Required</ion-text>
-    </div>
+  <table *ngIf="AllData!==null && showform===0" class="center" size="fixed" size-xs="12" size-md="12">
+    <thead>
+      <tr>
+        <td class="ion-text-center">
+          <ion-text color="primary"><b>Student Name</b></ion-text>
+        </td>
+        <td class="ion-text-center">
+          <ion-text color="primary"><b>Register Number</b></ion-text>
+        </td>
+        <td class="ion-text-center">
+          <ion-text color="primary"><b>Total</b></ion-text>
+        </td>
+        <td class="ion-text-center">
+          <ion-text color="primary"><b>Average</b></ion-text>
+        </td>
+        <td class="ion-text-center">
+          <ion-text color="primary"><b>Update</b></ion-text>
+        </td>
+        <td class="ion-text-center">
+          <ion-text color="primary"><b>Delete</b></ion-text>
+        </td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let Student of AllData">
+        <td class="ion-text-center"><b>{{Student.StudentName}}</b></td>
+        <td class="ion-text-right">{{Student.StudentRegNo}}</td>
+        <td class="ion-text-right">{{Student.Total}}</td>
+        <td class="ion-text-right">{{ Student.Average}}</td>
+        <td><ion-button type="button"class="ion-text-right" color="primary" (click)="changeOnData(Student,'Update')"><u>edit</u></ion-button></td>
+        <td><ion-button type="button"class="ion-text-right" color="danger" (click)="changeOnData(Student,'Delete')"><u>delete</u></ion-button></td>
+      </tr>
+    </tbody>
+  </table>
 
-    <ion-item>
-      <ion-label class="ion-text-left" position="floating" >Student Register Number</ion-label>
-      <ion-input min=1000000 [(ngModel)]="studentDetails.StudentRegNo" #StudentRegNoCtrl="ngModel" name="StudentRegNo"class="ion-text-right" required></ion-input>
-    </ion-item>
-    <div *ngIf="!StudentRegNoCtrl.valid && StudentRegNoCtrl.touched">
-      <ion-text color="danger">Student RegNo is Required</ion-text>
-    </div>
+  <ion-card *ngIf="showform===1">
+    <ion-row>
+      <ion-col>
+        <ion-button color="danger" (click)="close()"><ion-icon name="close" >Cancel</ion-icon></ion-button>
 
-    <ion-item>
-      <ion-label class="ion-text-left" position="floating" >Tamil (Mark out of 100)</ion-label>
-      <ion-input max=100 min=0 [(ngModel)]="studentDetails.Tamil" #TamilCtrl="ngModel" name="Tamil"class="ion-text-right" required></ion-input>
-    </ion-item>
-    <div *ngIf="!TamilCtrl.valid && TamilCtrl.touched">
-      <ion-text color="danger">Tamil Mark is Required</ion-text>
-    </div>
+      </ion-col>
+    </ion-row>
+    <form #submitform = "ngForm" (ngSubmit)="SubmitStudentDetails(submitform,choice)">
 
-    <ion-item>
-      <ion-label class="ion-text-left" position="floating" >English (Mark out of 100)</ion-label>
-      <ion-input max=100 min=0 [(ngModel)]="studentDetails.English" #EnglishCtrl="ngModel" name="English"class="ion-text-right" required></ion-input>
-    </ion-item>
-    <div *ngIf="!EnglishCtrl.valid && EnglishCtrl.touched">
-      <ion-text color="danger">English Mark is Required</ion-text>
-    </div>
+      <ion-item>
+        <ion-label class="ion-text-left" position="floating" >Student Name</ion-label>
+        <ion-input minlength=2 [(ngModel)]="studentDetails.StudentName" #StudentNameCtrl="ngModel" name="StudentName"class="ion-text-right" required></ion-input>
+      </ion-item>
+      <div *ngIf="!StudentNameCtrl.valid && StudentNameCtrl.touched">
+        <ion-text color="danger">Student Name is Required</ion-text>
+      </div>
 
-    <ion-item>
-      <ion-label class="ion-text-left" position="floating" >Maths (Mark out of 100)</ion-label>
-      <ion-input max=100 min=0 [(ngModel)]="studentDetails.Maths" #MathsCtrl="ngModel" name="Maths"class="ion-text-right" required></ion-input>
-    </ion-item>
-    <div *ngIf="!MathsCtrl.valid && MathsCtrl.touched">
-      <ion-text color="danger">Maths Mark is Required</ion-text>
-    </div>
+      <ion-item>
+        <ion-label class="ion-text-left" position="floating" >Student Register Number</ion-label>
+        <ion-input min=1000000 [(ngModel)]="studentDetails.StudentRegNo" #StudentRegNoCtrl="ngModel" name="StudentRegNo"class="ion-text-right" required></ion-input>
+      </ion-item>
+      <div *ngIf="!StudentRegNoCtrl.valid && StudentRegNoCtrl.touched">
+        <ion-text color="danger">Student RegNo is Required</ion-text>
+      </div>
 
-    <ion-item>
-      <ion-label class="ion-text-left" position="floating" >Social Science (Mark out of 100)</ion-label>
-      <ion-input max=100 min=0 [(ngModel)]="studentDetails.Social" #SocialCtrl="ngModel" name="Social"class="ion-text-right" required></ion-input>
-    </ion-item>
-    <div *ngIf="!SocialCtrl.valid && SocialCtrl.touched">
-      <ion-text color="danger">Social Mark is Required</ion-text>
-    </div>
+      <ion-item>
+        <ion-label class="ion-text-left" position="floating" >Tamil (Mark out of 100)</ion-label>
+        <ion-input max=100 min=0 [(ngModel)]="studentDetails.Tamil" #TamilCtrl="ngModel" name="Tamil"class="ion-text-right" required></ion-input>
+      </ion-item>
+      <div *ngIf="!TamilCtrl.valid && TamilCtrl.touched">
+        <ion-text color="danger">Tamil Mark is Required</ion-text>
+      </div>
 
-    <ion-item>
-      <ion-label class="ion-text-left" position="floating" >Science (Mark out of 100)</ion-label>
-      <ion-input max=100 min=0 [(ngModel)]="studentDetails.Science" #ScienceCtrl="ngModel" name="Science"class="ion-text-right" required></ion-input>
-    </ion-item>
-    <div *ngIf="!ScienceCtrl.valid && ScienceCtrl.touched">
-      <ion-text color="danger">Science Mark is Required</ion-text>
-    </div>
+      <ion-item>
+        <ion-label class="ion-text-left" position="floating" >English (Mark out of 100)</ion-label>
+        <ion-input max=100 min=0 [(ngModel)]="studentDetails.English" #EnglishCtrl="ngModel" name="English"class="ion-text-right" required></ion-input>
+      </ion-item>
+      <div *ngIf="!EnglishCtrl.valid && EnglishCtrl.touched">
+        <ion-text color="danger">English Mark is Required</ion-text>
+      </div>
 
-    <ion-button type="submit" [disabled]="!submitform.form.valid">Submit</ion-button>
+      <ion-item>
+        <ion-label class="ion-text-left" position="floating" >Maths (Mark out of 100)</ion-label>
+        <ion-input max=100 min=0 [(ngModel)]="studentDetails.Maths" #MathsCtrl="ngModel" name="Maths"class="ion-text-right" required></ion-input>
+      </ion-item>
+      <div *ngIf="!MathsCtrl.valid && MathsCtrl.touched">
+        <ion-text color="danger">Maths Mark is Required</ion-text>
+      </div>
 
-  </form>
+      <ion-item>
+        <ion-label class="ion-text-left" position="floating" >Social Science (Mark out of 100)</ion-label>
+        <ion-input max=100 min=0 [(ngModel)]="studentDetails.Social" #SocialCtrl="ngModel" name="Social"class="ion-text-right" required></ion-input>
+      </ion-item>
+      <div *ngIf="!SocialCtrl.valid && SocialCtrl.touched">
+        <ion-text color="danger">Social Mark is Required</ion-text>
+      </div>
+
+      <ion-item>
+        <ion-label class="ion-text-left" position="floating" >Science (Mark out of 100)</ion-label>
+        <ion-input max=100 min=0 [(ngModel)]="studentDetails.Science" #ScienceCtrl="ngModel" name="Science"class="ion-text-right" required></ion-input>
+      </ion-item>
+      <div *ngIf="!ScienceCtrl.valid && ScienceCtrl.touched">
+        <ion-text color="danger">Science Mark is Required</ion-text>
+      </div>
+
+      <ion-button *ngIf="choice===null" type="submit" [disabled]="!submitform.form.valid">Submit</ion-button>
+      <ion-button *ngIf="choice!==null" type="submit" [disabled]="!submitform.form.valid">Update</ion-button>
+
+    </form>
+  </ion-card>
+  <ion-fab *ngIf="showform===0" vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button>
+      <ion-icon (click)="addStudent()" name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 
 </ion-content>

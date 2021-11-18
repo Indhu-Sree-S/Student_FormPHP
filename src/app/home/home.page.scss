@@ -25,3 +25,33 @@
 #container a {
   text-decoration: none;
 }
+
+
+table,th,td{
+  border: 1px solid black;
+}
+th,td{
+    padding: 15px;
+}
+table{
+    width:100%;
+}
+
+
+table {
+  margin: auto;
+  border-collapse: collapse;
+  overflow-x: auto;
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+}
+// td, th {
+//   padding: .5rem;
+// }
+th {
+  text-align: left;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-top: none;
+}
